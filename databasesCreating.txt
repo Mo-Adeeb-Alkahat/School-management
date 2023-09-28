@@ -1,0 +1,65 @@
+pip install psycopg2
+
+CREATE TABLE students (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    father_name VARCHAR(255),
+    mother_name VARCHAR(255),
+    phone_number VARCHAR(20),
+    job VARCHAR(255),
+    student_phone VARCHAR(20),
+    birth_place VARCHAR(255),
+    birth_date DATE,
+    joining_date DATE,
+    address TEXT,
+    unique_id VARCHAR(20),
+    tuition_fee DECIMAL(10,2),
+);
+
+CREATE TABLE exams (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER REFERENCES students(id),
+    exam_date DATE,
+    subject VARCHAR(255),
+    score INTEGER
+);
+
+
+
+CREATE TABLE payments (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER REFERENCES students(id),
+    date DATE NOT NULL,
+    amount NUMERIC(10, 2) NOT NULL,
+    receipt_id VARCHAR(20) NOT NULL,
+    remaining_amount NUMERIC(10, 2),
+    description TEXT
+);
+
+
+
+
+import psycopg2
+
+conn = psycopg2.connect(
+    host="your_host_name",
+    database="your_database_name",
+    user="your_username",
+    password="your_password"
+)
+
+
+
+
+
+cur = conn.cursor()
+
+cur.execute(
+    "INSERT INTO students (name, father_name, mother_name, phone_number, job, student_phone, birth_place, birth_date, joining_date, address, unique_id, tuition_fee, monthly_fee, monthly_fee_description, remaining_fee) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    ("John Smith", "Bob Smith", "Sue Smith", "555-1234", "Engineer", "555-5678", "New York, NY", "1990-01-01", "2022-04-25", "123 Main St", "123456789", 5000.00, 500.00, "First month's fee", 4500.00)
+)
+
+conn.commit()
+
+cur.close()
+conn.close()
