@@ -1,6 +1,6 @@
 # School-management
 
-school managment system built with puthon and postgres
+school managment system built with python and postgres
 
 
 ## Quick start 
